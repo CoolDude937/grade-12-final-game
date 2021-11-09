@@ -76,22 +76,5 @@ namespace CastleOfPain
             //draws a general game item
             spriteBatch.Draw(sprite, rect, color);
         }
-
-        //universal hit test
-        public virtual bool hitTest(Rectangle otherRect)
-        {
-            //if this rectangle intersects with the other rectangle
-            if (this.rect.Intersects(otherRect))
-            {
-                //return true for the hittest
-                return true;
-            }
-            //else it did not intersect it
-            else
-            {
-                //return false for the hittest
-                return false;
-            }
-        }
     }
 }
