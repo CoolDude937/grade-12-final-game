@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -30,7 +30,11 @@ namespace CastleOfPain
             float aRotation, Vector2 aSpriteVelocity)
             : base(movingSprite, movingRect, movingColor)
         {
-
+            //sets the value to be entered by user into these variables
+            this.setSpriteOrigin(aSpriteOrigin);
+            this.setSpritePosition(aSpritePosition);
+            this.setRotation(aRotation);
+            this.setSpriteVelocity(aSpriteVelocity);
         }
 
         //getter for sprite origin
