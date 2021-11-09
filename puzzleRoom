@@ -1,0 +1,187 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+
+
+namespace CastleOfPain
+{
+    class puzzleRoom: generalGameItem
+    {
+        //create the 4 private rect variables
+        private Rectangle lightRect1;
+        private Rectangle lightRect2;
+        private Rectangle lightRect3;
+        private Rectangle lightRect4;
+
+        //create Texture 2D for lightball
+        private Texture2D lightBall;
+
+        //create timer variable
+        int timer = 0;
+
+        //constructor
+        public puzzleRoom(Color puzzleColor, Rectangle aLightRect1, Rectangle aLightRect2, Rectangle aLightRect3, Rectangle aLightRect4, Texture2D aLightBall): base (aLightBall, aLightRect1, puzzleColor)
+        {
+            //set light 1 to the contructor light 1
+            this.setLight1(aLightRect1);
+
+            //set light 2 to the contructor light 2
+            this.setLight2(aLightRect2);
+
+            //set light 3 to the contructor light 3
+            this.setLight3(aLightRect3);
+
+            //set light 4 to the contructor light 4
+            this.setLight4(aLightRect4);
+
+            this.setLightBall(aLightBall);
+
+            this.timer = 0;
+        }
+        //getter for rectangle 1
+        public Rectangle getLight1()
+        {
+            //returns value of the rectangle in this class
+            return this.lightRect1;
+        }
+        //setter for rectangle 1
+        public void setLight1(Rectangle someLight1)
+        {
+            //assigns the value of the rectangle to whatever the user assigns the rectangle as
+            this.lightRect1 = someLight1;
+        }
+        //------------------------------------------
+        //getter for rectangle 2
+        public Rectangle getLight2()
+        {
+            //returns value of the rectangle in this class
+            return this.lightRect2;
+        }
+        //setter for rectangle 2
+        public void setLight2(Rectangle someLight2)
+        {
+            //assigns the value of the rectangle to whatever the user assigns the rectangle as
+            this.lightRect2 = someLight2;
+        }
+        //------------------------------------------
+        //getter for rectangle 3
+        public Rectangle getLight3()
+        {
+            //returns value of the rectangle in this class
+            return this.lightRect3;
+        }
+        //setter for rectangle 3
+        public void setLight3(Rectangle someLight3)
+        {
+            //assigns the value of the rectangle to whatever the user assigns the rectangle as
+            this.lightRect3 = someLight3;
+        }
+        //------------------------------------------
+        //getter for rectangle 4
+        public Rectangle getLight4()
+        {
+            //returns value of the rectangle in this class
+            return this.lightRect4;
+        }
+        //setter for rectangle 4
+        public void setLight4(Rectangle someLight4)
+        {
+            //assigns the value of the rectangle to whatever the user assigns the rectangle as
+            this.lightRect4 = someLight4;
+        }
+        //------------------------------------------
+        //getter for light ball
+        public Texture2D getLightBall()
+        {
+            //returns value of the light ball in this class
+            return this.lightBall;
+        }
+        //setter for light ball
+        public void setLightBall(Texture2D someLightBall)
+        {
+            //assigns the value of the light ball to whatever the user assigns the rectangle as
+            this.lightBall = someLightBall;
+        }
+
+        public void DrawLight(SpriteBatch spriteBatch)
+        {
+            //draws all of the lightballs in their off position
+            spriteBatch.Draw(lightBall, lightRect1, Color.Black);
+            spriteBatch.Draw(lightBall, lightRect2, Color.Black);
+            spriteBatch.Draw(lightBall, lightRect3, Color.Black);
+            spriteBatch.Draw(lightBall, lightRect4, Color.Black);
+        }
+        public void flash1(SpriteBatch spriteBatch)
+        {
+
+            //draws the light ball for light 1 on
+            spriteBatch.Draw(lightBall, lightRect1, Color.White);       
+            //while the timer is less than a second
+            if (timer < 60)
+            {
+                //ticks up the timer
+                timer++;
+            }
+            //if timer hits one second
+            if (timer >= 60)
+            {
+                //turn the light back off again
+                spriteBatch.Draw(lightBall, lightRect1, Color.Black);
+            }
+//---------
+            //draws the light ball for light 2 on
+            spriteBatch.Draw(lightBall, lightRect2, Color.White);       
+            //while the timer is less than a second
+            if (timer < 120)
+            {
+                //ticks up the timer
+                timer++;
+            }
+            //if timer hits one second
+            if (timer >= 120)
+            {
+                //turn the light back off again
+                spriteBatch.Draw(lightBall, lightRect2, Color.Black);
+            }
+//---------
+            //draws the light ball for light 3 on
+            spriteBatch.Draw(lightBall, lightRect3, Color.White);       
+            //while the timer is less than a second
+            if (timer < 180)
+            {
+                //ticks up the timer
+                timer++;
+            }
+            //if timer hits one second
+            if (timer >= 180)
+            {
+                //turn the light back off again
+                spriteBatch.Draw(lightBall, lightRect3, Color.Black);
+            }
+//---------
+            //draws the light ball for light 4 on
+            spriteBatch.Draw(lightBall, lightRect4, Color.White);       
+            //while the timer is less than a second
+            if (timer < 240)
+            {
+                //ticks up the timer
+                timer++;
+            }
+            //if timer hits one second
+            if (timer >= 240)
+            {
+                //turn the light back off again
+                spriteBatch.Draw(lightBall, lightRect4, Color.Black);
+            }
+
+        }
+    }
+}
+
