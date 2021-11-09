@@ -24,10 +24,13 @@ namespace CastleOfPain
         //variables for controlling sprite speed
         private Vector2 spriteVelocity;
 
+        //variable for distance
+        private Vector2 distance;
+
         //constructor
-        public movingGameItem(Texture2D movingSprite, Rectangle movingRect, 
-            Color movingColor, Vector2 aSpriteOrigin, Vector2 aSpritePosition, 
-            float aRotation, Vector2 aSpriteVelocity)
+        public movingGameItem(Texture2D movingSprite, Rectangle movingRect,
+            Color movingColor, Vector2 aSpriteOrigin, Vector2 aSpritePosition,
+            float aRotation, Vector2 aSpriteVelocity, Vector2 aDistance)
             : base(movingSprite, movingRect, movingColor)
         {
             //sets the value to be entered by user into these variables
@@ -35,6 +38,7 @@ namespace CastleOfPain
             this.setSpritePosition(aSpritePosition);
             this.setRotation(aRotation);
             this.setSpriteVelocity(aSpriteVelocity);
+            this.setDistance(aDistance);
         }
 
         //getter for sprite origin
@@ -91,6 +95,20 @@ namespace CastleOfPain
         {
             //sets the value of this sprite velocity as whatever the user will set it as
             this.spriteVelocity = someSpriteVelocity;
+        }
+
+        //getter for sprite distance 
+        public Vector2 getDistance()
+        {
+            //returns value of distance
+            return distance;
+        }
+
+        //setter for sprite distance
+        public void setDistance(Vector2 someDistance)
+        {
+            //sets the value of this distance as whatever the user will set it as
+            this.distance = someDistance;
         }
     }
 }
