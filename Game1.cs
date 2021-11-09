@@ -18,7 +18,13 @@ namespace CastleOfPain
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        
+        //sets puzzle light to puzzle room
+        puzzleRoom puzzleLight;
+        
+        //sets puzzle halway as a general game room
+        generalGameItem puzzleHallway;
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -46,8 +52,14 @@ namespace CastleOfPain
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
+            
+            //loads the puzzle light and all of the other constructor variables with it
+            puzzleLight = new puzzleRoom(Color.Black, new Rectangle(200, 250, 50, 50), new Rectangle(300, 250, 50, 50), new Rectangle(400, 250, 50, 50), new Rectangle(500, 250, 50, 50), Content.Load<Texture2D>("lightBall"));
+
+            //loads puzzle hallway image
+            puzzleHallway = new generalGameItem(Content.Load<Texture2D>("puzzleHallway"), new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White) ;
+
         }
 
         /// <summary>
@@ -82,9 +94,23 @@ namespace CastleOfPain
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // TODO: Add your drawing code here
+            
+            //starts the sprite batch
+            spriteBatch.Begin();
 
+            //draws the puzzle hallway
+            puzzleHallway.Draw(spriteBatch);
+
+            //draws puzzle hallway
+            puzzleLight.DrawLight(spriteBatch);
+
+            //draws the first flash sequence
+            puzzleLight.flash1(spriteBatch);
+
+            //ends the sprite batch
+            spriteBatch.End();
+            
             base.Draw(gameTime);
         }
     }
