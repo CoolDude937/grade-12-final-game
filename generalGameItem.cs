@@ -70,6 +70,19 @@ namespace CastleOfPain
             this.color = someColor;
         }
 
+                //global hit test
+        public virtual bool hitTest(Rectangle otherRect)
+        {
+            if (this.rect.Intersects(otherRect))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
         //universal draw method
         public virtual void Draw(SpriteBatch spriteBatch)
         {
