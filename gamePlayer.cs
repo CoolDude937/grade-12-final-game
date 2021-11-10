@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -14,39 +14,42 @@ namespace CastleOfPain
     //subclass of moving game item
     class gamePlayer : movingGameItem
     {
+          
         //variables for sprite placement
         private Vector2 playerOrigin;
 
         //variables for sprite position and rotation
         private Vector2 playerPosition;
-        private float playerRotation;
 
         //variables for controlling sprite speed
         private Vector2 playerVelocity;
 
-        //variable for distance
-        private Vector2 playerDistance;
-
-        //friction variable
-        private float playerFriction;
-
-        //player rectangle
-        private Rectangle playerRect;
-
         //player image
         private Texture2D playerSprite;
+
+        private Vector2 playerDistance;
+
+        private Rectangle playerRect;
+
+        private float playerRotation;
+        
+        //friction variable
+        private float playerFriction;
 
         bool isMouseVisible;
         //constructor
         public gamePlayer(float aPlayerFriction, Texture2D aPlayerSprite, Rectangle aPlayerRect,
-            Color playerColor, Vector2 playerOrigin, Vector2 playerPosition,
-            float playerRotation, Vector2 playerVelocity, Vector2 playerDistance) : base(aPlayerSprite, aPlayerRect,
-                playerColor, playerOrigin, playerPosition, playerRotation, playerVelocity, playerDistance)
+            Color aPlayerColor, Vector2 aPlayerOrigin, Vector2 aPlayerPosition,
+            float aPlayerRotation, Vector2 aPlayerVelocity, Vector2 aPlayerDistance) : base(aPlayerSprite, aPlayerRect,
+                aPlayerColor, aPlayerOrigin, aPlayerPosition, aPlayerRotation, aPlayerVelocity)
         {
             //sets the value of this friction
             this.setFriction(aPlayerFriction);
 
-            isMouseVisible = true;
+            this.setDistance(aPlayerDistance);
+
+            this.setPlayerSprite(aPlayerSprite);
+
             this.playerFriction = 0.1f;
         }
 
@@ -64,9 +67,38 @@ namespace CastleOfPain
             this.playerFriction = someFriction;
         }
 
+        //getter for distance
+        public Vector2 getDistance()
+        {
+            //returns value of distance
+            return this.playerDistance;
+        }
+
+        //setter for distance
+        public void setDistance(Vector2 someDistance)
+        {
+            //sets the value of distance to whatever it is set as by user
+            this.playerDistance = someDistance;
+        }
+
+        //getter for player sprite
+        public Texture2D getPlayerSprite()
+        {
+            //returns value of player sprite
+            return this.playerSprite;
+        }
+
+        //setter for player sprite
+        public void setPlayerSprite(Texture2D somePlayerSprite)
+        {
+            //sets the value of player sprite to whatever it is set as by user
+            this.playerSprite = somePlayerSprite;
+        }
+
         public void playerUpdate()
         {
             MouseState mouse = Mouse.GetState();
+            isMouseVisible = true;
 
             playerDistance.X = mouse.X - playerPosition.X;
             playerDistance.Y = mouse.Y - playerPosition.Y;
@@ -110,6 +142,12 @@ namespace CastleOfPain
                 playerVelocity.X = i -= playerFriction * i;
                 playerVelocity.Y = j -= playerFriction * j;
             }
+        }
+
+        //method to draw in the player
+        public void drawPlayer(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(playerSprite, playerPosition, null, Color.White, playerRotation, playerOrigin, 1f, SpriteEffects.None, 0);
         }
     }
 }
