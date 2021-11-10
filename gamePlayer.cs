@@ -16,25 +16,25 @@ namespace CastleOfPain
     {
           
         //variables for sprite placement
-        private Vector2 playerOrigin;
+        protected Vector2 playerOrigin;
 
         //variables for sprite position and rotation
-        private Vector2 playerPosition;
+        protected Vector2 playerPosition;
 
         //variables for controlling sprite speed
-        private Vector2 playerVelocity;
+        protected Vector2 playerVelocity;
 
         //player image
-        private Texture2D playerSprite;
+        protected Texture2D playerSprite;
 
-        private Vector2 playerDistance;
+        protected Vector2 playerDistance;
 
-        private Rectangle playerRect;
+        protected Rectangle playerRect;
 
-        private float playerRotation;
+        protected float playerRotation;
         
         //friction variable
-        private float playerFriction;
+        protected float playerFriction;
 
         bool isMouseVisible;
         //constructor
