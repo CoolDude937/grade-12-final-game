@@ -19,6 +19,16 @@ namespace CastleOfPain
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         
+        //player stuff
+        Rectangle playerRect;
+        gamePlayer player;
+        Texture2D playersprite;
+        float playerRotation;
+        Vector2 playerPosition;
+        Vector2 playerVelocity;
+        Vector2 playerOrigin;
+        Vector2 playerDistance;
+        
         //sets puzzle light to puzzle room
         puzzleRoom puzzleLight;
         
@@ -41,6 +51,8 @@ namespace CastleOfPain
         {
             // TODO: Add your initialization logic here
 
+            playerPosition = new Vector2(350, 200);
+            
             base.Initialize();
         }
 
@@ -59,6 +71,9 @@ namespace CastleOfPain
 
             //loads puzzle hallway image
             puzzleHallway = new generalGameItem(Content.Load<Texture2D>("puzzleHallway"), new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White) ;
+
+            //loads player in
+            player = new gamePlayer(0.1f, Content.Load<Texture2D>("gunkirby"), playerRect, Color.White, playerOrigin, playerPosition, playerRotation, playerVelocity, playerDistance);
 
         }
 
@@ -82,6 +97,9 @@ namespace CastleOfPain
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            //updates player
+            player.playerUpdate();
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -99,6 +117,9 @@ namespace CastleOfPain
             //starts the sprite batch
             spriteBatch.Begin();
 
+            //draws in player
+            player.drawPlayer(spriteBatch);
+            
             //draws the puzzle hallway
             puzzleHallway.Draw(spriteBatch);
 
