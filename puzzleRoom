@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CastleOfPain
 {
-    class puzzleRoom: generalGameItem
+    class puzzleRoom : generalGameItem
     {
         //create the 4 private rect variables
         private Rectangle lightRect1;
@@ -23,11 +23,13 @@ namespace CastleOfPain
         //create Texture 2D for lightball
         private Texture2D lightBall;
 
+        SpriteBatch spriteBatch;
+
         //create timer variable
         int timer = 0;
 
         //constructor
-        public puzzleRoom(Color puzzleColor, Rectangle aLightRect1, Rectangle aLightRect2, Rectangle aLightRect3, Rectangle aLightRect4, Texture2D aLightBall): base (aLightBall, aLightRect1, puzzleColor)
+        public puzzleRoom(Color puzzleColor, Rectangle aLightRect1, Rectangle aLightRect2, Rectangle aLightRect3, Rectangle aLightRect4, Texture2D aLightBall) : base(aLightBall, aLightRect1, puzzleColor)
         {
             //set light 1 to the contructor light 1
             this.setLight1(aLightRect1);
@@ -120,68 +122,42 @@ namespace CastleOfPain
         }
         public void flash1(SpriteBatch spriteBatch)
         {
-
-            //draws the light ball for light 1 on
-            spriteBatch.Draw(lightBall, lightRect1, Color.White);       
-            //while the timer is less than a second
-            if (timer < 60)
-            {
-                //ticks up the timer
-                timer++;
-            }
+            timer++;
             //if timer hits one second
-            if (timer >= 60)
+            if (timer >= 200)
             {
                 //turn the light back off again
+                spriteBatch.Draw(lightBall, lightRect1, Color.White);
+            }
+            //if timer hits one second
+            if (timer >= 400)
+            {
+                //turn the light back off again
+                spriteBatch.Draw(lightBall, lightRect2, Color.White);
+            }
+            //if timer hits one second
+            if (timer >= 600)
+            {
+                //turn the light back off again
+                spriteBatch.Draw(lightBall, lightRect3, Color.White);
+            }
+            //if timer hits one second
+            if (timer >= 800)
+            {
+                //turn the light back off again
+                spriteBatch.Draw(lightBall, lightRect4, Color.White);                         
+            }
+            if (timer > 1000)
+            {
                 spriteBatch.Draw(lightBall, lightRect1, Color.Black);
-            }
-//---------
-            //draws the light ball for light 2 on
-            spriteBatch.Draw(lightBall, lightRect2, Color.White);       
-            //while the timer is less than a second
-            if (timer < 120)
-            {
-                //ticks up the timer
-                timer++;
-            }
-            //if timer hits one second
-            if (timer >= 120)
-            {
-                //turn the light back off again
                 spriteBatch.Draw(lightBall, lightRect2, Color.Black);
-            }
-//---------
-            //draws the light ball for light 3 on
-            spriteBatch.Draw(lightBall, lightRect3, Color.White);       
-            //while the timer is less than a second
-            if (timer < 180)
-            {
-                //ticks up the timer
-                timer++;
-            }
-            //if timer hits one second
-            if (timer >= 180)
-            {
-                //turn the light back off again
                 spriteBatch.Draw(lightBall, lightRect3, Color.Black);
-            }
-//---------
-            //draws the light ball for light 4 on
-            spriteBatch.Draw(lightBall, lightRect4, Color.White);       
-            //while the timer is less than a second
-            if (timer < 240)
-            {
-                //ticks up the timer
-                timer++;
-            }
-            //if timer hits one second
-            if (timer >= 240)
-            {
-                //turn the light back off again
                 spriteBatch.Draw(lightBall, lightRect4, Color.Black);
             }
-
+         
         }
+
+
     }
 }
 
