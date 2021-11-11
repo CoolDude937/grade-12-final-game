@@ -128,6 +128,12 @@ namespace CastleOfPain
                 shootCounter++;
             }
             
+            //moves enemy back and forth
+            testEnemy.patrollingEnemy();
+
+            //keeps player in the screen
+            player.outOfBounds();
+            
             // TODO: Add your update logic here
 
             base.Update(gameTime);
