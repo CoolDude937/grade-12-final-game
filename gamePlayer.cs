@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -26,31 +26,17 @@ namespace CastleOfPain
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
                 //move the game item right
-                rect.X+=3;
+                rect.X+=2;
             }
 
             //if the left arrow key is pressed
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 //move the game item left
-                rect.X-=3;
-            }
-
-            //if the up arrow key is pressed
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                //move the game item up
-                rect.Y-=3;
-            }
-
-            //if the down arrow key is pressed
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                //move the game item down
-                rect.Y+=3;
+                rect.X-=2;
             }
         }
-        
+
         //method to keep player rectangle within bounds
         public void outOfBounds()
         {
@@ -73,3 +59,20 @@ namespace CastleOfPain
         }
     }
 }
+
+//code graveyard
+/*
+            //if the up arrow key is pressed
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                //move the game item up
+                rect.Y-=3;
+            }
+
+            //if the down arrow key is pressed
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                //move the game item down
+                rect.Y+=3;
+            }
+            */
