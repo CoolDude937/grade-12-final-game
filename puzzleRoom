@@ -23,8 +23,6 @@ namespace CastleOfPain
         //create Texture 2D for lightball
         private Texture2D lightBall;
 
-        SpriteBatch spriteBatch;
-
         //create timer variable
         int timer = 0;
 
@@ -112,6 +110,7 @@ namespace CastleOfPain
             this.lightBall = someLightBall;
         }
 
+        //method to draw the lights in
         public void DrawLight(SpriteBatch spriteBatch)
         {
             //draws all of the lightballs in their off position
@@ -120,6 +119,7 @@ namespace CastleOfPain
             spriteBatch.Draw(lightBall, lightRect3, Color.Black);
             spriteBatch.Draw(lightBall, lightRect4, Color.Black);
         }
+        //method to flash the lights 1 by 1
         public void flash1(SpriteBatch spriteBatch)
         {
             timer++;
@@ -145,19 +145,17 @@ namespace CastleOfPain
             if (timer >= 800)
             {
                 //turn the light back off again
-                spriteBatch.Draw(lightBall, lightRect4, Color.White);                         
+                spriteBatch.Draw(lightBall, lightRect4, Color.White);
             }
-            if (timer > 1000)
+        }
+    }
+}
+/* code graveyard
+ *             if (timer > 1000)
             {
                 spriteBatch.Draw(lightBall, lightRect1, Color.Black);
                 spriteBatch.Draw(lightBall, lightRect2, Color.Black);
                 spriteBatch.Draw(lightBall, lightRect3, Color.Black);
                 spriteBatch.Draw(lightBall, lightRect4, Color.Black);
             }
-         
-        }
-
-
-    }
-}
-
+*/
