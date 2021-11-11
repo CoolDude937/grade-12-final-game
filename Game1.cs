@@ -18,24 +18,46 @@ namespace CastleOfPain
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
         //player stuff
         gamePlayer player;
+
+        //player bullet stuff
         //list of bullets
         List<playerBullet> bullets = new List<playerBullet>();
         //bullet sprite
         Texture2D bulletSprite;
+        //bullet delay 
+        int shootCounter = 0;
+
+        //mouse stuff
         //mouse state variable
         MouseState mouse;
         //mouse past state variable
         MouseState oldMouse;
-        
+
+        //enemy stuff
+        List<enemy> listOfEnemies = new List<enemy>();
+        Texture2D enemySprite;
+
         //sets puzzle light to puzzle room
         puzzleRoom puzzleLight;
-        
-        //sets puzzle halway as a general game room
-        generalGameItem puzzleHallway;
-        
+
+        //sets puzzle room background variable
+        generalGameItem backGroundImage;
+
+        //timer for the game timer
+        int gameTimer;
+
+        //bool for game victory
+        bool isGameWon;
+
+        //font variable for the end message
+        SpriteFont ggFont;
+
+        //font variable for the instructins
+        SpriteFont instructionFont;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -51,10 +73,13 @@ namespace CastleOfPain
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+      
             //sets up player
-            player = new gamePlayer(new Rectangle(300, 330, 50, 50), Content.Load<Texture2D>("testcharacter"), Color.White)
-            
+            player = new gamePlayer(new Rectangle(300, 430, 50, 50), Content.Load<Texture2D>("testcharacter"), Color.White);
+
+            //sets up bg image
+            backGroundImage = new generalGameItem(Content.Load<Texture2D>("dungeon"), new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+
             base.Initialize();
         }
 
@@ -66,17 +91,31 @@ namespace CastleOfPain
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            // TODO: use this.Content to load your game content here
-            
-            //loads the puzzle light and all of the other constructor variables with it
-            puzzleLight = new puzzleRoom(Color.Black, new Rectangle(200, 250, 50, 50), new Rectangle(300, 250, 50, 50), new Rectangle(400, 250, 50, 50), new Rectangle(500, 250, 50, 50), Content.Load<Texture2D>("lightBall"));
 
-            //loads puzzle hallway image
-            puzzleHallway = new generalGameItem(Content.Load<Texture2D>("puzzleHallway"), new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White) 
-
-            //bullet image
+            //loads in bullet sprite
             bulletSprite = Content.Load<Texture2D>("bullet");
 
+            //loads in enemy sprite
+            enemySprite = Content.Load<Texture2D>("waddledee");
+
+            //loads in light ball sprite
+            puzzleLight = new puzzleRoom(Color.Black, new Rectangle(225, 300, 50, 50), new Rectangle(325, 300, 50, 50), new Rectangle(425, 300, 50, 50), new Rectangle(525, 300, 50, 50), Content.Load<Texture2D>("lightBall"));
+
+            //loads in the end of game font into the font variable 
+            ggFont = Content.Load<SpriteFont>("ggFont");
+
+            //loads in the instruction font into the font variable
+            instructionFont = Content.Load<SpriteFont>("instructionFont");
+
+            //adds three enemies to a list of enemies
+            //slow enemy
+            listOfEnemies.Add(new enemy(enemySprite, new Rectangle(740, 200, 50, 50), Color.White, new Vector2(10f, 0)));
+            //faster enemy
+            listOfEnemies.Add(new enemy(enemySprite, new Rectangle(300, 100, 50, 50), Color.White, new Vector2(15f, 0)));
+            //fastest enemy
+            listOfEnemies.Add(new enemy(enemySprite, new Rectangle(0, 0, 50, 50), Color.White, new Vector2(20f, 0)));
+
+            // TODO: use this.Content to load your game content here
         }
 
         /// <summary>
@@ -95,6 +134,9 @@ namespace CastleOfPain
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            //ticks the timer
+            gameTimer++;
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -105,15 +147,16 @@ namespace CastleOfPain
             //moves player
             player.movePlayer();
      
-            //for loop to draw bullets
+            //for loop to move bullets
             for (int i = 0; i < bullets.Count; i++)
             {
                 //moves each bullet up 
                 bullets[i].moveBullet();           
             }
 
+//BULLET LAG
             //if the bullet timer has reached the limit
-            if (shootCounter >= 8)
+            if (shootCounter >= 9)
             {
                 //handles bullets
                 handleBullets();
@@ -127,18 +170,58 @@ namespace CastleOfPain
                 //keep counting the counter
                 shootCounter++;
             }
-            
-            //moves enemy back and forth
-            testEnemy.patrollingEnemy();
+//-------------
+
+            //for loop to move the enemies back and forth
+            for (int i = 0; i < listOfEnemies.Count; i++)
+            {
+                //moves enemy back and forth
+                listOfEnemies[i].patrollingEnemy();
+            }
 
             //keeps player in the screen
             player.outOfBounds();
-            
+
+
+            //bullet hit test with enemies
+            //for loop to run through the bullet list
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                //for loop to run throught the enemy list
+                for (int j = 0; j < listOfEnemies.Count; j++)
+                { 
+                    //if a bullet strikes an enemy
+                    if (bullets[i].getRect().Intersects(listOfEnemies[j].getRect()))
+                    {                    
+                            //remove the bullet from the list
+                            bullets.Remove(bullets[i]);
+                            //remove the enemy from the list
+                            listOfEnemies.Remove(listOfEnemies[j]);
+                       
+                            //get out since the bullet has been removed, to avoid runtime error
+                            break;                  
+                    }               
+                }
+            }
+
+            //if the timer has reached the limit (800 ticks) and the player has defeated all 3 enemies
+            if (gameTimer >= 800  && listOfEnemies.Count==0)
+            {
+                //set the bool for a victory to true
+                isGameWon = true;
+            }
+            //if the timer reached the limit and the player has not defeated all 3 enemies
+            if (gameTimer >= 800 && listOfEnemies.Count!=0)
+            {
+                //set the bool for a victory to false
+                isGameWon = false;
+            }
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
-        
+
         //method to add bullets
         public void handleBullets()
         {
@@ -162,13 +245,18 @@ namespace CastleOfPain
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
             // TODO: Add your drawing code here
-            
-            //starts the sprite batch
-            spriteBatch.Begin();
 
-            //draws player
+            //begin spritebatch drawing
+            spriteBatch.Begin();
+           
+            //draws in background
+            backGroundImage.Draw(spriteBatch);
+
+            //display instructions
+            spriteBatch.DrawString(instructionFont, "Shoot all of the enemies before all the lights turn on. GL HF!", new Vector2(55, 400), Color.White);
+
+            //draws in player
             player.Draw(spriteBatch);
 
             //for loop to draw bullets
@@ -177,20 +265,46 @@ namespace CastleOfPain
                 //moves each bullet up 
                 bullets[i].Draw(spriteBatch);
             }
-            
-            //draws the puzzle hallway
-            puzzleHallway.Draw(spriteBatch);
 
-            //draws puzzle hallway
+            //for loop to draw enemies
+            for (int i = 0; i < listOfEnemies.Count; i++)
+            {
+                listOfEnemies[i].Draw(spriteBatch);
+            }
+
+            //draws puzzle lights
             puzzleLight.DrawLight(spriteBatch);
 
             //draws the first flash sequence
             puzzleLight.flash1(spriteBatch);
 
-            //ends the sprite batch
+            //if the bool for game won is true and the timer has reached the limit
+            if (gameTimer>=800 && isGameWon == true)
+            {
+                //display a victory message
+                spriteBatch.DrawString(ggFont, "gg ez", new Vector2(0, 100), Color.White);
+            }
+
+            //if the bool for game won is false and the timer has reached the limit
+            if (gameTimer>=800 && isGameWon == false)
+            {
+                //display a loss message
+                spriteBatch.DrawString(ggFont, "lol bad", new Vector2(0, 100), Color.White);
+            }
+
+            //end spritebatch drawing
             spriteBatch.End();
-            
+
             base.Draw(gameTime);
         }
     }
 }
+//code graveyard
+/*
+                 //if the bullet goes off screen
+                if (bullets[i].getRect().Y < 0)
+                {
+                    //remove that bullet from the list
+                    bullets.Remove(bullets[i]);
+                }
+*/
