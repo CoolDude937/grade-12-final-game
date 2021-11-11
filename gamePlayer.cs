@@ -50,5 +50,26 @@ namespace CastleOfPain
                 rect.Y+=3;
             }
         }
+        
+        //method to keep player rectangle within bounds
+        public void outOfBounds()
+        {
+            //if the player rectangle is trying to go left off screen
+            if (rect.X <= 0)
+                //keep it within bounds
+                rect.X = 0;
+            //if the player rectangle is trying to go right off screen
+            if (rect.X >= 800-rect.Width)
+                //keep it within bounds
+                rect.X = 800-rect.Width;
+            //if the player rectangle is trying to go up off screen
+            if (rect.Y <= 0)
+                //keep it within bounds
+                rect.Y = 0;
+            //if the player rectangle is trying to go down off screen
+            if (rect.Y >= 480-rect.Height)
+                //keep it within bounds
+                rect.Y = 480-rect.Height;
+        }
     }
 }
