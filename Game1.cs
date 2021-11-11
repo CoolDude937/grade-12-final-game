@@ -112,9 +112,22 @@ namespace CastleOfPain
                 bullets[i].moveBullet();           
             }
 
-            //handles bullets
-            handleBullets();
+            //if the bullet timer has reached the limit
+            if (shootCounter >= 8)
+            {
+                //handles bullets
+                handleBullets();
 
+                //reset bullet counter
+                shootCounter = 0;
+            }
+            //else there is still time to wait til the next shot
+            else
+            {
+                //keep counting the counter
+                shootCounter++;
+            }
+            
             // TODO: Add your update logic here
 
             base.Update(gameTime);
