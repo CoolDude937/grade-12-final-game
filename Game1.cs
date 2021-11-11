@@ -20,14 +20,15 @@ namespace CastleOfPain
         SpriteBatch spriteBatch;
         
         //player stuff
-        Rectangle playerRect;
         gamePlayer player;
-        Texture2D playersprite;
-        float playerRotation;
-        Vector2 playerPosition;
-        Vector2 playerVelocity;
-        Vector2 playerOrigin;
-        Vector2 playerDistance;
+        //list of bullets
+        List<playerBullet> bullets = new List<playerBullet>();
+        //bullet sprite
+        Texture2D bulletSprite;
+        //mouse state variable
+        MouseState mouse;
+        //mouse past state variable
+        MouseState oldMouse;
         
         //sets puzzle light to puzzle room
         puzzleRoom puzzleLight;
@@ -51,7 +52,8 @@ namespace CastleOfPain
         {
             // TODO: Add your initialization logic here
 
-            playerPosition = new Vector2(350, 200);
+            //sets up player
+            player = new gamePlayer(new Rectangle(300, 330, 50, 50), Content.Load<Texture2D>("testcharacter"), Color.White)
             
             base.Initialize();
         }
@@ -70,10 +72,10 @@ namespace CastleOfPain
             puzzleLight = new puzzleRoom(Color.Black, new Rectangle(200, 250, 50, 50), new Rectangle(300, 250, 50, 50), new Rectangle(400, 250, 50, 50), new Rectangle(500, 250, 50, 50), Content.Load<Texture2D>("lightBall"));
 
             //loads puzzle hallway image
-            puzzleHallway = new generalGameItem(Content.Load<Texture2D>("puzzleHallway"), new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White) ;
+            puzzleHallway = new generalGameItem(Content.Load<Texture2D>("puzzleHallway"), new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White) 
 
-            //loads player in
-            player = new gamePlayer(0.1f, Content.Load<Texture2D>("gunkirby"), playerRect, Color.White, playerOrigin, playerPosition, playerRotation, playerVelocity, playerDistance);
+            //bullet image
+            bulletSprite = Content.Load<Texture2D>("bullet");
 
         }
 
@@ -97,12 +99,42 @@ namespace CastleOfPain
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            //updates player
-            player.playerUpdate();
+            //assigns state of mouse to mousestate variable
+            mouse = Mouse.GetState();
+
+            //moves player
+            player.movePlayer();
+     
+            //for loop to draw bullets
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                //moves each bullet up 
+                bullets[i].moveBullet();           
+            }
+
+            //handles bullets
+            handleBullets();
 
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+        }
+        
+        //method to add bullets
+        public void handleBullets()
+        {
+            //if the m1 button is clicked
+            if (mouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released)
+            {
+                //creates new bullet
+                playerBullet newBullet = new playerBullet(bulletSprite, new Rectangle(player.getRect().X+player.getRect().Width/2-8, player.getRect().Y, 15, 15), Color.White);
+
+                //puts new bullet into list
+                bullets.Add(newBullet);
+            }
+
+            //edge detection
+            oldMouse = mouse;
         }
 
         /// <summary>
@@ -117,8 +149,15 @@ namespace CastleOfPain
             //starts the sprite batch
             spriteBatch.Begin();
 
-            //draws in player
-            player.drawPlayer(spriteBatch);
+            //draws player
+            player.Draw(spriteBatch);
+
+            //for loop to draw bullets
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                //moves each bullet up 
+                bullets[i].Draw(spriteBatch);
+            }
             
             //draws the puzzle hallway
             puzzleHallway.Draw(spriteBatch);
