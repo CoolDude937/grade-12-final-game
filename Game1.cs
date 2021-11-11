@@ -111,9 +111,9 @@ namespace CastleOfPain
             //slow enemy
             listOfEnemies.Add(new enemy(enemySprite, new Rectangle(740, 200, 50, 50), Color.White, new Vector2(10f, 0)));
             //faster enemy
-            listOfEnemies.Add(new enemy(enemySprite, new Rectangle(300, 100, 50, 50), Color.White, new Vector2(15f, 0)));
+            listOfEnemies.Add(new enemy(enemySprite, new Rectangle(300, 100, 50, 50), Color.White, new Vector2(18f, 0)));
             //fastest enemy
-            listOfEnemies.Add(new enemy(enemySprite, new Rectangle(0, 0, 50, 50), Color.White, new Vector2(20f, 0)));
+            listOfEnemies.Add(new enemy(enemySprite, new Rectangle(0, 0, 50, 50), Color.White, new Vector2(23f, 0)));
 
             // TODO: use this.Content to load your game content here
         }
@@ -154,21 +154,25 @@ namespace CastleOfPain
                 bullets[i].moveBullet();           
             }
 
-//BULLET LAG
-            //if the bullet timer has reached the limit
-            if (shootCounter >= 9)
+            //BULLET LAG
+            //if the timer has reached the limit
+            if (gameTimer < 800)
             {
-                //handles bullets
-                handleBullets();
+                //if the bullet timer has reached the limit
+                if (shootCounter >= 10)
+                {
+                    //handles bullets
+                    handleBullets();
 
-                //reset bullet counter
-                shootCounter = 0;
-            }
-            //else there is still time to wait til the next shot
-            else
-            {
-                //keep counting the counter
-                shootCounter++;
+                    //reset bullet counter
+                    shootCounter = 0;
+                }
+                //else there is still time to wait til the next shot
+                else
+                {
+                    //keep counting the counter
+                    shootCounter++;
+                }
             }
 //-------------
 
@@ -265,13 +269,13 @@ namespace CastleOfPain
                 //moves each bullet up 
                 bullets[i].Draw(spriteBatch);
             }
-
+            
             //for loop to draw enemies
             for (int i = 0; i < listOfEnemies.Count; i++)
             {
                 listOfEnemies[i].Draw(spriteBatch);
             }
-
+            
             //draws puzzle lights
             puzzleLight.DrawLight(spriteBatch);
 
